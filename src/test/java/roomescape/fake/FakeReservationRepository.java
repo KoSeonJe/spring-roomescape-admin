@@ -24,13 +24,13 @@ public class FakeReservationRepository implements ReservationRepository {
         Long saveId = AUTO_INCREMENT.getAndIncrement();
         reservation.updateId(saveId);
         REPOSITORY.put(saveId, reservation);
-        return Reservation.deepCopyOf(reservation);
+        return deepCopyOf(reservation);
     }
 
     @Override
     public Optional<Reservation> findById(Long id) {
         return Optional.ofNullable(REPOSITORY.get(id))
-                .map(Reservation::deepCopyOf);
+                .map(this::deepCopyOf);
     }
 
     @Override
@@ -41,5 +41,14 @@ public class FakeReservationRepository implements ReservationRepository {
     public static void clear() {
         AUTO_INCREMENT.set(1);
         REPOSITORY.clear();
+    }
+
+
+    public Reservation deepCopyOf(Reservation reservation) {
+        if (reservation == null) {
+            throw new IllegalArgumentException("null인 객체는 복사할 수 없습니다");
+        }
+        return new Reservation(reservation.getId(), reservation.getName(), reservation.getDate(),
+                reservation.getTime());
     }
 }

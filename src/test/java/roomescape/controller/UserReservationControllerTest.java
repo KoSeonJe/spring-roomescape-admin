@@ -10,12 +10,12 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.HashMap;
 import java.util.Map;
-import roomescape.config.TestConfig;
+import roomescape.config.MissionStepTestConfig;
 import roomescape.fake.FakeReservationRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@Import(TestConfig.class)
+@Import(MissionStepTestConfig.class)
 class UserReservationControllerTest {
 
     @BeforeEach

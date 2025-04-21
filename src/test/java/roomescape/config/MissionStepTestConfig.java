@@ -6,7 +6,7 @@ import roomescape.domain.ReservationRepository;
 import roomescape.fake.FakeReservationRepository;
 
 @TestConfiguration
-public class TestConfig {
+public class MissionStepTestConfig {
 
     @Bean
     public ReservationRepository reservationRepository() {

@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
-import roomescape.config.TestConfig;
+import roomescape.config.MissionStepTestConfig;
 import roomescape.fake.FakeReservationRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@Import(TestConfig.class)
+@Import(MissionStepTestConfig.class)
 public class MissionStepTest {
 
     @BeforeEach
