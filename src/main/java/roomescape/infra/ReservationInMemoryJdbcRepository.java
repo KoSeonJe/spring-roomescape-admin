@@ -1,10 +1,14 @@
 package roomescape.infra;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationRepository;
@@ -25,22 +29,41 @@ public class ReservationInMemoryJdbcRepository implements ReservationRepository 
 
     @Override
     public List<Reservation> getAll() {
-        String getAllQuery = "SELECT * FROM reservation";
-        return jdbcTemplate.query(getAllQuery, ROW_MAPPER);
+        String selectAllQuery = "SELECT * FROM reservation";
+        return jdbcTemplate.query(selectAllQuery, ROW_MAPPER);
     }
 
     @Override
     public Reservation save(Reservation reservation) {
-        return null;
+        String insertQuery = "INSERT INTO reservation (name, date, time) values (?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
+            ps.setString(1, reservation.getName());
+            ps.setString(2, reservation.getDate().toString());
+            ps.setString(3, reservation.getTime().toString());
+            return ps;
+        }, keyHolder);
+        Long id = keyHolder.getKey().longValue();
+
+        reservation.updateId(id);
+        return reservation;
     }
 
     @Override
     public Optional<Reservation> findById(Long id) {
-        return Optional.empty();
+        String selectQuery = "SELECT * FROM reservation WHERE id = ?";
+
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(selectQuery, ROW_MAPPER, id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public void remove(Long id) {
-
+        String deleteQuery = "DELETE FROM reservation WHERE id = ?";
+        jdbcTemplate.update(deleteQuery, id);
     }
 }
