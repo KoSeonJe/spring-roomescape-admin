@@ -5,11 +5,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import org.springframework.stereotype.Repository;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationRepository;
 
-@Repository
 public class ReservationInMemoryRepository implements ReservationRepository {
 
     private static final AtomicLong AUTO_INCREMENT = new AtomicLong(1);
