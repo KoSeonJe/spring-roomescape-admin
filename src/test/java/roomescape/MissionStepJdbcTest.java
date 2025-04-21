@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,11 @@ public class MissionStepJdbcTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @BeforeEach
+    void setUp() {
+        jdbcTemplate.update("TRUNCATE TABLE reservation");  // 테이블의 모든 데이터를 삭제
+    }
 
     @Test
     void 사단계() {
