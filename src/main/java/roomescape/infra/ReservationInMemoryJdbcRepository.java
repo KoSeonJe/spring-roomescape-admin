@@ -12,7 +12,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationRepository;
-import roomescape.util.DateTimeUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,8 +20,8 @@ public class ReservationInMemoryJdbcRepository implements ReservationRepository 
     private static final RowMapper<Reservation> ROW_MAPPER = (resultSet, rowNum) -> new Reservation(
             resultSet.getLong("id"),
             resultSet.getString("name"),
-            DateTimeUtils.parseToDate(resultSet.getString("date")),
-            DateTimeUtils.parseToTime(resultSet.getString("time"))
+            resultSet.getDate("date").toLocalDate(),
+            resultSet.getTime("time").toLocalTime()
     );
 
     private final JdbcTemplate jdbcTemplate;
