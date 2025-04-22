@@ -1,4 +1,4 @@
-package roomescape.infra;
+package roomescape.repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -11,7 +11,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.Reservation;
-import roomescape.domain.ReservationRepository;
 import roomescape.domain.ReservationTime;
 
 @Repository

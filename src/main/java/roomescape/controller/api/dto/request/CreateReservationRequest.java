@@ -1,8 +1,7 @@
 package roomescape.controller.api.dto.request;
 
 import java.time.LocalDate;
-import roomescape.domain.Reservation;
-import roomescape.domain.ReservationTime;
+import roomescape.service.dto.ReservationInfo;
 
 public record CreateReservationRequest(
         String name,
@@ -24,7 +23,7 @@ public record CreateReservationRequest(
         }
     }
 
-    public Reservation toDomain(ReservationTime reservationTime) {
-        return new Reservation(name, date, reservationTime);
+    public ReservationInfo toDomainInfo() {
+        return new ReservationInfo(name, date, timeId);
     }
 }

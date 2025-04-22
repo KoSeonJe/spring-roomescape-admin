@@ -1,11 +1,12 @@
-package roomescape.domain;
+package roomescape.repository;
 
 import java.util.List;
 import java.util.Optional;
+import roomescape.domain.ReservationTime;
 
 public interface ReservationTimeRepository {
 
-    ReservationTime create(ReservationTime reservationTime);
+    ReservationTime save(ReservationTime reservationTime);
 
     List<ReservationTime> getAll();
 

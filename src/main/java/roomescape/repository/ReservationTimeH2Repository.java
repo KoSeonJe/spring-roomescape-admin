@@ -1,4 +1,4 @@
-package roomescape.infra;
+package roomescape.repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -11,7 +11,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.ReservationTime;
-import roomescape.domain.ReservationTimeRepository;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class ReservationTimeH2Repository implements ReservationTimeRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public ReservationTime create(ReservationTime reservationTime) {
+    public ReservationTime save(ReservationTime reservationTime) {
         String insertQuery = "INSERT INTO reservation_time (start_at) VALUES (?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {

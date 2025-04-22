@@ -14,22 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 import roomescape.controller.api.dto.request.CreateReservationRequest;
 import roomescape.controller.api.dto.response.ReservationResponse;
 import roomescape.domain.Reservation;
-import roomescape.domain.ReservationRepository;
-import roomescape.domain.ReservationTime;
-import roomescape.domain.ReservationTimeRepository;
+import roomescape.service.UserReservationService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/reservations")
 public class UserReservationController {
 
-    private final ReservationRepository reservationRepository;
-    private final ReservationTimeRepository reservationTimeRepository;
+    private final UserReservationService userReservationService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<ReservationResponse> getAll() {
-        return reservationRepository.getAll().stream()
+        List<Reservation> reservations = userReservationService.getAll();
+        return reservations.stream()
                 .map(ReservationResponse::from)
                 .toList();
     }
@@ -37,28 +35,13 @@ public class UserReservationController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ReservationResponse create(@RequestBody CreateReservationRequest request) {
-        ReservationTime reservationTime = getReservationTime(request.timeId());
-        Reservation reservation = request.toDomain(reservationTime);
-
-        Reservation savedReservation = reservationRepository.save(reservation);
-
+        Reservation savedReservation = userReservationService.create(request.toDomainInfo());
         return ReservationResponse.from(savedReservation);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
-        Reservation target = getReservation(id);
-        reservationRepository.remove(target);
-    }
-
-    private Reservation getReservation(Long reservationId) {
-        return reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 예약이 존재하지 않습니다."));
-    }
-
-    private ReservationTime getReservationTime(Long timeId) {
-        return reservationTimeRepository.findById(timeId)
-                .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 시간이 존재하지 않습니다."));
+        userReservationService.delete(id);
     }
 }
