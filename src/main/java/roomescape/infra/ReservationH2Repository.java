@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationRepository;
+import roomescape.domain.ReservationTime;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,26 +22,34 @@ public class ReservationH2Repository implements ReservationRepository {
             resultSet.getLong("id"),
             resultSet.getString("name"),
             resultSet.getDate("date").toLocalDate(),
-            resultSet.getTime("time").toLocalTime()
+            new ReservationTime(
+                    resultSet.getLong("reservation.time_id"),
+                    resultSet.getTime("reservation_time.start_at").toLocalTime()
+            )
     );
 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
     public List<Reservation> getAll() {
-        String selectAllQuery = "SELECT * FROM reservation";
+        String selectAllQuery = """
+                SELECT *
+                FROM reservation
+                INNER JOIN reservation_time
+                ON reservation.time_id = reservation_time.id
+                """;
         return jdbcTemplate.query(selectAllQuery, ROW_MAPPER);
     }
 
     @Override
     public Reservation save(Reservation reservation) {
-        String insertQuery = "INSERT INTO reservation (name, date, time) VALUES (?, ?, ?)";
+        String insertQuery = "INSERT INTO reservation (name, date, time_id) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
             ps.setString(1, reservation.getName());
             ps.setString(2, reservation.getDate().toString());
-            ps.setString(3, reservation.getTime().toString());
+            ps.setLong(3, reservation.getTime().getId());
             return ps;
         }, keyHolder);
         Long id = keyHolder.getKey().longValue();
@@ -50,8 +59,13 @@ public class ReservationH2Repository implements ReservationRepository {
 
     @Override
     public Optional<Reservation> findById(Long id) {
-        String selectQuery = "SELECT * FROM reservation WHERE id = ?";
-
+        String selectQuery = """
+                SELECT *
+                FROM reservation
+                INNER JOIN reservation_time
+                ON reservation.time_id = reservation_time.id
+                WHERE id = ?
+                """;
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(selectQuery, ROW_MAPPER, id));
         } catch (EmptyResultDataAccessException e) {

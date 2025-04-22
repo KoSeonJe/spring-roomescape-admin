@@ -1,7 +1,6 @@
 package roomescape.domain;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,21 +12,21 @@ public class Reservation {
     private Long id;
     private String name;
     private LocalDate date;
-    private LocalTime time;
+    private ReservationTime time;
 
-    public Reservation(Long id, String name, LocalDate date, LocalTime time) {
-        validate(name, date, time);
+    public Reservation(Long id, String name, LocalDate date, ReservationTime time) {
+        validate(name, date);
         this.date = date;
         this.time = time;
         this.name = name;
         this.id = id;
     }
 
-    public Reservation(String name, LocalDate date, LocalTime time) {
+    public Reservation(String name, LocalDate date, ReservationTime time) {
         this(null, name, date, time);
     }
 
-    private void validate(String name, LocalDate date, LocalTime time) {
+    private void validate(String name, LocalDate date) {
         if (name == null) {
             throw new IllegalArgumentException("이름은 null이 될 수 없습니다.");
         }
@@ -36,9 +35,6 @@ public class Reservation {
         }
         if (date == null) {
             throw new IllegalArgumentException("날짜는 null이 될 수 없습니다.");
-        }
-        if (time == null) {
-            throw new IllegalArgumentException("시간은 null이 될 수 없습니다.");
         }
     }
 }

@@ -15,6 +15,8 @@ import roomescape.controller.api.dto.request.CreateReservationRequest;
 import roomescape.controller.api.dto.response.ReservationResponse;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationRepository;
+import roomescape.domain.ReservationTime;
+import roomescape.domain.ReservationTimeRepository;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ import roomescape.domain.ReservationRepository;
 public class UserReservationController {
 
     private final ReservationRepository reservationRepository;
+    private final ReservationTimeRepository reservationTimeRepository;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -34,7 +37,8 @@ public class UserReservationController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ReservationResponse create(@RequestBody CreateReservationRequest request) {
-        Reservation reservation = request.toDomain();
+        ReservationTime reservationTime = getReservationTime(request.timeId());
+        Reservation reservation = request.toDomain(reservationTime);
 
         Reservation savedReservation = reservationRepository.save(reservation);
 
@@ -51,5 +55,10 @@ public class UserReservationController {
     private Reservation getReservation(Long reservationId) {
         return reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 예약이 존재하지 않습니다."));
+    }
+
+    private ReservationTime getReservationTime(Long timeId) {
+        return reservationTimeRepository.findById(timeId)
+                .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 시간이 존재하지 않습니다."));
     }
 }
