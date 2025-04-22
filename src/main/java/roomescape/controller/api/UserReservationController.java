@@ -1,4 +1,4 @@
-package roomescape.controller;
+package roomescape.controller.api;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import roomescape.controller.dto.request.ReservationCreateRequest;
-import roomescape.controller.dto.response.ReservationResponse;
+import roomescape.controller.api.dto.request.CreateReservationRequest;
+import roomescape.controller.api.dto.response.ReservationResponse;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationRepository;
 
@@ -33,7 +33,7 @@ public class UserReservationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ReservationResponse create(@RequestBody ReservationCreateRequest request) {
+    public ReservationResponse create(@RequestBody CreateReservationRequest request) {
         Reservation reservation = request.toDomain();
 
         Reservation savedReservation = reservationRepository.save(reservation);
@@ -45,8 +45,7 @@ public class UserReservationController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         Reservation target = getReservation(id);
-
-        reservationRepository.remove(target.getId());
+        reservationRepository.remove(target);
     }
 
     private Reservation getReservation(Long reservationId) {

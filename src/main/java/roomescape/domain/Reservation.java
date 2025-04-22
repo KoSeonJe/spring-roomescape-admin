@@ -41,8 +41,4 @@ public class Reservation {
             throw new IllegalArgumentException("시간은 null이 될 수 없습니다.");
         }
     }
-
-    public void updateId(Long savedId) {
-        this.id = savedId;
-    }
 }

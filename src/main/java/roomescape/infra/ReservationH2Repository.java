@@ -15,7 +15,7 @@ import roomescape.domain.ReservationRepository;
 
 @Repository
 @RequiredArgsConstructor
-public class ReservationInMemoryJdbcRepository implements ReservationRepository {
+public class ReservationH2Repository implements ReservationRepository {
 
     private static final RowMapper<Reservation> ROW_MAPPER = (resultSet, rowNum) -> new Reservation(
             resultSet.getLong("id"),
@@ -34,7 +34,7 @@ public class ReservationInMemoryJdbcRepository implements ReservationRepository 
 
     @Override
     public Reservation save(Reservation reservation) {
-        String insertQuery = "INSERT INTO reservation (name, date, time) values (?, ?, ?)";
+        String insertQuery = "INSERT INTO reservation (name, date, time) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
@@ -45,8 +45,7 @@ public class ReservationInMemoryJdbcRepository implements ReservationRepository 
         }, keyHolder);
         Long id = keyHolder.getKey().longValue();
 
-        reservation.updateId(id);
-        return reservation;
+        return new Reservation(id, reservation.getName(), reservation.getDate(), reservation.getTime());
     }
 
     @Override
@@ -61,8 +60,8 @@ public class ReservationInMemoryJdbcRepository implements ReservationRepository 
     }
 
     @Override
-    public void remove(Long id) {
+    public void remove(Reservation reservation) {
         String deleteQuery = "DELETE FROM reservation WHERE id = ?";
-        jdbcTemplate.update(deleteQuery, id);
+        jdbcTemplate.update(deleteQuery, reservation.getId());
     }
 }

@@ -2,7 +2,6 @@ package roomescape.domain;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Repository;
 
 public interface ReservationRepository {
 
@@ -12,5 +11,5 @@ public interface ReservationRepository {
 
     Optional<Reservation> findById(Long id);
 
-    void remove(Long id);
+    void remove(Reservation reservation);
 }
