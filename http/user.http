@@ -1,4 +1,4 @@
-### 예약 추가
+### 예약 추가 API
 POST localhost:8080/reservations
 Content-Type: application/json
 
@@ -8,10 +8,19 @@ Content-Type: application/json
   "time": "20:00"
 }
 
-### 예약 전체 조회
+### 예약 전체 조회 API
 
 GET localhost:8080/reservations
 
-### 예약 삭제
+### 예약 삭제 API
 
 DELETE localhost:8080/reservations/1
+
+### 시간 추가 API
+
+POST /times HTTP/1.1
+content-type: application/json
+
+{
+  "startAt": "10:00"
+}
