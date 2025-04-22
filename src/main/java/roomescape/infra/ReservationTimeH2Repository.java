@@ -2,7 +2,9 @@ package roomescape.infra;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -40,5 +42,21 @@ public class ReservationTimeH2Repository implements ReservationTimeRepository {
     public List<ReservationTime> getAll() {
         String selectQuery = "SELECT * FROM reservation_time";
         return jdbcTemplate.query(selectQuery, ROW_MAPPER);
+    }
+
+    @Override
+    public Optional<ReservationTime> findById(Long id) {
+        String selectQuery = "SELECT * FROM reservation_time WHERE id = ?";
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(selectQuery, ROW_MAPPER, id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public void remove(ReservationTime reservation) {
+        String deleteQuery = "DELETE FROM reservation_time WHERE id = ?";
+        jdbcTemplate.update(deleteQuery, reservation.getId());
     }
 }

@@ -1,6 +1,3 @@
-DROP TABLE IF EXISTS reservation_time;
-DROP TABLE IF EXISTS reservation;
-
 CREATE TABLE reservation
 (
     id      BIGINT       NOT NULL AUTO_INCREMENT,

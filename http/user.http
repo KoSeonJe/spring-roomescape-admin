@@ -28,3 +28,7 @@ content-type: application/json
 ### 시간 조회 API
 
 GET localhost:8080/admin/times
+
+### 시간 삭제 API
+
+DELETE localhost:8080/admin/times/1

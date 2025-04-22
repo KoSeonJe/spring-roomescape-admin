@@ -10,20 +10,28 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
 import roomescape.domain.Reservation;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class MissionStepJdbcTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @BeforeEach
+    void setUp() {
+        jdbcTemplate.update("TRUNCATE TABLE reservation");
+        jdbcTemplate.update("ALTER TABLE reservation ALTER COLUMN id RESTART WITH 1");
+
+        jdbcTemplate.update("TRUNCATE TABLE reservation_time");
+        jdbcTemplate.update("ALTER TABLE reservation_time ALTER COLUMN id RESTART WITH 1");
+    }
 
     @Test
     void 사단계() {
@@ -85,19 +93,19 @@ public class MissionStepJdbcTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(params)
-                .when().post("/times")
+                .when().post("/admin/times")
                 .then().log().all()
                 .statusCode(201);
 
         RestAssured.given().log().all()
-                .when().get("/times")
+                .when().get("/admin/times")
                 .then().log().all()
                 .statusCode(200)
                 .body("size()", is(1));
 
         RestAssured.given().log().all()
-                .when().delete("/times/1")
+                .when().delete("/admin/times/1")
                 .then().log().all()
-                .statusCode(200);
+                .statusCode(204);
     }
 }

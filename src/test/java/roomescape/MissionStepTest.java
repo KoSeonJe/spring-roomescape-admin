@@ -6,13 +6,23 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class MissionStepTest {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @BeforeEach
+    void setUp() {
+        jdbcTemplate.update("TRUNCATE TABLE reservation");
+        jdbcTemplate.update("ALTER TABLE reservation ALTER COLUMN id RESTART WITH 1");
+    }
 
     @Test
     void 일단계() {
