@@ -18,7 +18,7 @@ DELETE localhost:8080/reservations/1
 
 ### 시간 추가 API
 
-POST /times HTTP/1.1
+POST localhost:8080/admin/times
 content-type: application/json
 
 {

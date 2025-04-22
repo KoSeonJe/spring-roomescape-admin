@@ -17,7 +17,7 @@ public class ReservationTimeH2Repository implements ReservationTimeRepository {
 
     @Override
     public ReservationTime create(ReservationTime reservationTime) {
-        String insertQuery = "INSERT INTO reservation_time (startAt) VALUES (?)";
+        String insertQuery = "INSERT INTO reservation_time (start_at) VALUES (?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
