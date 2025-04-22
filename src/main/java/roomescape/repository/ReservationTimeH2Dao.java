@@ -9,12 +9,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import roomescape.domain.ReservationTime;
 
-@Repository
+@Component
 @RequiredArgsConstructor
-public class ReservationTimeH2Repository implements ReservationTimeRepository {
+public class ReservationTimeH2Dao implements ReservationTimeRepository {
 
     private static final RowMapper<ReservationTime> ROW_MAPPER = (resultSet, rowNum) -> new ReservationTime(
             resultSet.getLong("id"),
