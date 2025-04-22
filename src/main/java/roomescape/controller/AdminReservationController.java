@@ -18,8 +18,8 @@ import roomescape.domain.ReservationRepository;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reservations")
-public class UserReservationController {
+@RequestMapping("/admin/reservations")
+public class AdminReservationController {
 
     private final ReservationRepository reservationRepository;
 
