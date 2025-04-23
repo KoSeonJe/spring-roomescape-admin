@@ -9,10 +9,10 @@ public record ReservationResponse(
         Long id,
         String name,
         LocalDate date,
-        ReservationTimeResponse time
+        ReservationTimeInfo time
 ) {
 
-    record ReservationTimeResponse(
+    record ReservationTimeInfo(
             Long id,
             @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
             LocalTime startAt
@@ -24,7 +24,7 @@ public record ReservationResponse(
                 query.id(),
                 query.name(),
                 query.date(),
-                new ReservationTimeResponse(query.time().id(), query.time().startAt())
+                new ReservationTimeInfo(query.timeId(), query.startAt())
                 );
     }
 }
