@@ -15,6 +15,6 @@ public class AdminViewController {
 
     @GetMapping("/reservation")
     public String reservation() {
-        return "redirect:/admin/reservation-legacy.html";
+        return "redirect:/admin/reservation.html";
     }
 }
