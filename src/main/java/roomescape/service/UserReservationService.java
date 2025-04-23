@@ -7,7 +7,8 @@ import roomescape.domain.Reservation;
 import roomescape.repository.ReservationRepository;
 import roomescape.domain.ReservationTime;
 import roomescape.repository.ReservationTimeRepository;
-import roomescape.service.dto.ReservationInfo;
+import roomescape.service.dto.command.CreateReservationCommand;
+import roomescape.service.dto.query.ReservationQuery;
 
 @Service
 @RequiredArgsConstructor
@@ -16,15 +17,18 @@ public class UserReservationService {
     private final ReservationRepository reservationRepository;
     private final ReservationTimeRepository reservationTimeRepository;
 
-
-    public List<Reservation> getAll() {
-        return reservationRepository.getAll();
+    public List<ReservationQuery> getAll() {
+        List<Reservation> reservations = reservationRepository.getAll();
+        return reservations.stream()
+                .map(ReservationQuery::from)
+                .toList();
     }
 
-    public Reservation create(ReservationInfo reservationInfo) {
-        ReservationTime reservationTime = getReservationTime(reservationInfo.timeId());
-        Reservation reservation = reservationInfo.toDomain(reservationTime);
-        return reservationRepository.save(reservation);
+    public ReservationQuery create(CreateReservationCommand command) {
+        ReservationTime reservationTime = getReservationTime(command.timeId());
+        Reservation reservation = command.toDomain(reservationTime);
+        Reservation savedReservation = reservationRepository.save(reservation);
+        return ReservationQuery.from(savedReservation);
     }
 
     public void delete(Long id) {

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import roomescape.controller.api.dto.request.CreateReservationRequest;
 import roomescape.controller.api.dto.response.ReservationResponse;
-import roomescape.domain.Reservation;
 import roomescape.service.UserReservationService;
+import roomescape.service.dto.query.ReservationQuery;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,8 +26,8 @@ public class UserReservationController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<ReservationResponse> getAll() {
-        List<Reservation> reservations = userReservationService.getAll();
-        return reservations.stream()
+        List<ReservationQuery> queries = userReservationService.getAll();
+        return queries.stream()
                 .map(ReservationResponse::from)
                 .toList();
     }
@@ -35,8 +35,8 @@ public class UserReservationController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ReservationResponse create(@RequestBody CreateReservationRequest request) {
-        Reservation savedReservation = userReservationService.create(request.toDomainInfo());
-        return ReservationResponse.from(savedReservation);
+        ReservationQuery query = userReservationService.create(request.toCommand());
+        return ReservationResponse.from(query);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

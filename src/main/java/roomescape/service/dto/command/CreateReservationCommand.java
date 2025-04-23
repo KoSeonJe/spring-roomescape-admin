@@ -1,10 +1,10 @@
-package roomescape.service.dto;
+package roomescape.service.dto.command;
 
 import java.time.LocalDate;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationTime;
 
-public record ReservationInfo(
+public record CreateReservationCommand(
         String name,
         LocalDate date,
         Long timeId

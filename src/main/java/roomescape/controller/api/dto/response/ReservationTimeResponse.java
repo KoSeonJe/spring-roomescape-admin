@@ -2,7 +2,7 @@ package roomescape.controller.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalTime;
-import roomescape.domain.ReservationTime;
+import roomescape.service.dto.query.ReservationTimeQuery;
 
 public record ReservationTimeResponse(
         Long id,
@@ -10,7 +10,7 @@ public record ReservationTimeResponse(
         LocalTime startAt
 ) {
 
-    public static ReservationTimeResponse from(ReservationTime reservationTime) {
-        return new ReservationTimeResponse(reservationTime.getId(), reservationTime.getStartAt());
+    public static ReservationTimeResponse from(ReservationTimeQuery query) {
+        return new ReservationTimeResponse(query.id(), query.startAt());
     }
 }

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import roomescape.controller.api.dto.request.CreateReservationTimeRequest;
 import roomescape.controller.api.dto.response.ReservationTimeResponse;
-import roomescape.domain.ReservationTime;
 import roomescape.service.AdminReservationTimeService;
+import roomescape.service.dto.query.ReservationTimeQuery;
 
 @RestController
 @RequestMapping("/admin/times")
@@ -26,14 +26,14 @@ public class AdminReservationTimeController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ReservationTimeResponse create(@RequestBody CreateReservationTimeRequest request) {
-        ReservationTime createdReservation = adminReservationTimeService.create(request.toDomainInfo());
-        return ReservationTimeResponse.from(createdReservation);
+        ReservationTimeQuery query = adminReservationTimeService.create(request.toCommand());
+        return ReservationTimeResponse.from(query);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<ReservationTimeResponse> getAll() {
-        List<ReservationTime> reservationTimes = adminReservationTimeService.getAll();
+        List<ReservationTimeQuery> reservationTimes = adminReservationTimeService.getAll();
         return reservationTimes.stream()
                 .map(ReservationTimeResponse::from)
                 .toList();

@@ -5,7 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import roomescape.domain.ReservationTime;
 import roomescape.repository.ReservationTimeRepository;
-import roomescape.service.dto.ReservationTimeInfo;
+import roomescape.service.dto.command.CreateReservationTimeCommand;
+import roomescape.service.dto.query.ReservationTimeQuery;
 
 @Service
 @RequiredArgsConstructor
@@ -13,12 +14,16 @@ public class AdminReservationTimeService {
 
     private final ReservationTimeRepository reservationTimeRepository;
 
-    public ReservationTime create(ReservationTimeInfo reservationTimeInfo) {
-       return reservationTimeRepository.save(reservationTimeInfo.toDomain());
+    public ReservationTimeQuery create(CreateReservationTimeCommand command) {
+        ReservationTime reservationTime = reservationTimeRepository.save(command.toDomain());
+        return ReservationTimeQuery.from(reservationTime);
     }
 
-    public List<ReservationTime> getAll() {
-        return reservationTimeRepository.getAll();
+    public List<ReservationTimeQuery> getAll() {
+        List<ReservationTime> reservationTimes = reservationTimeRepository.getAll();
+        return reservationTimes.stream()
+                .map(ReservationTimeQuery::from)
+                .toList();
     }
 
     public void delete(Long id) {
