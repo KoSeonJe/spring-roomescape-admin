@@ -17,4 +17,9 @@ public class AdminViewController {
     public String reservation() {
         return "redirect:/admin/reservation.html";
     }
+
+    @GetMapping("/time")
+    public String time() {
+        return "redirect:/admin/time.html";
+    }
 }
