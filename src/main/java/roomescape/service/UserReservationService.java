@@ -21,7 +21,7 @@ public class UserReservationService {
     @Transactional
     public ReservationQuery create(CreateReservationCommand command) {
         ReservationTime reservationTime = getReservationTime(command.timeId());
-        Reservation reservation = command.toDomain(reservationTime);
+        Reservation reservation = command.toReservation(reservationTime);
         Reservation savedReservation = reservationRepository.save(reservation);
         return ReservationQuery.from(savedReservation);
     }

@@ -7,7 +7,7 @@ public record CreateReservationTimeCommand(
         LocalTime startAt
 ) {
 
-    public ReservationTime toDomain() {
+    public ReservationTime toReservationTime() {
         return new ReservationTime(startAt);
     }
 }
