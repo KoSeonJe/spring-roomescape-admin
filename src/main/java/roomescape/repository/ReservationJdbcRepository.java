@@ -15,36 +15,21 @@ public class ReservationJdbcRepository implements ReservationRepository {
 
     @Override
     public List<Reservation> getAll() {
-        String selectAllQuery = """
-                SELECT *
-                FROM reservation
-                INNER JOIN reservation_time
-                ON reservation.time_id = reservation_time.id
-                """;
-        return reservationDao.getAllQuery(selectAllQuery);
+        return reservationDao.getAllQuery();
     }
 
     @Override
     public Reservation save(Reservation reservation) {
-        String insertQuery = "INSERT INTO reservation (name, date, time_id) VALUES (?, ?, ?)";
-        return reservationDao.insertAndGet(insertQuery, reservation);
+        return reservationDao.insertAndGet(reservation);
     }
 
     @Override
     public Optional<Reservation> findById(Long reservationId) {
-        String selectQuery = """
-                SELECT *
-                FROM reservation
-                INNER JOIN reservation_time
-                ON reservation.time_id = reservation_time.id
-                WHERE reservation.id = ?
-                """;
-        return reservationDao.getQuery(selectQuery, reservationId);
+        return reservationDao.getQuery(reservationId);
     }
 
     @Override
     public void remove(Reservation reservation) {
-        String deleteQuery = "DELETE FROM reservation WHERE id = ?";
-        reservationDao.update(deleteQuery, reservation.getId());
+        reservationDao.deleteById(reservation.getId());
     }
 }

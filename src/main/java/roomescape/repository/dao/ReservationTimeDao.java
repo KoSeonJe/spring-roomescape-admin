@@ -23,14 +23,18 @@ public class ReservationTimeDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public List<ReservationTime> getAllQuery(String sql) {
-        return jdbcTemplate.query(sql, ROW_MAPPER);
+    public List<ReservationTime> getAllQuery() {
+        String selectQuery = "SELECT * FROM reservation_time";
+
+        return jdbcTemplate.query(selectQuery, ROW_MAPPER);
     }
 
-    public ReservationTime insertAndGet(String sql, ReservationTime reservationTime) {
+    public ReservationTime insertAndGet(ReservationTime reservationTime) {
+        String insertQuery = "INSERT INTO reservation_time (start_at) VALUES (?)";
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
             ps.setString(1, reservationTime.getStartAt().toString());
             return ps;
         }, keyHolder);
@@ -39,15 +43,19 @@ public class ReservationTimeDao {
         return new ReservationTime(id, reservationTime.getStartAt());
     }
 
-    public Optional<ReservationTime> getQuery(String sql, Object... args) {
+    public Optional<ReservationTime> getQuery(Long id) {
+        String selectQuery = "SELECT * FROM reservation_time WHERE id = ?";
+
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ROW_MAPPER, args));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(selectQuery, ROW_MAPPER, id));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
-    public void update(String sql, Object... args) {
-        jdbcTemplate.update(sql, args);
+    public void deleteById(Long id) {
+        String deleteQuery = "DELETE FROM reservation_time WHERE id = ?";
+
+        jdbcTemplate.update(deleteQuery, id);
     }
 }

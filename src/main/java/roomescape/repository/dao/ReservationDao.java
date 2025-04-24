@@ -29,14 +29,22 @@ public class ReservationDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public List<Reservation> getAllQuery(String sql) {
-        return jdbcTemplate.query(sql, ROW_MAPPER);
+    public List<Reservation> getAllQuery() {
+        String selectAllQuery = """
+                SELECT *
+                FROM reservation
+                INNER JOIN reservation_time
+                ON reservation.time_id = reservation_time.id
+                """;
+        return jdbcTemplate.query(selectAllQuery, ROW_MAPPER);
     }
 
-    public Reservation insertAndGet(String sql, Reservation reservation) {
+    public Reservation insertAndGet(Reservation reservation) {
+        String insertQuery = "INSERT INTO reservation (name, date, time_id) VALUES (?, ?, ?)";
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
             ps.setString(1, reservation.getName());
             ps.setString(2, reservation.getDate().toString());
             ps.setLong(3, reservation.getTime().getId());
@@ -47,15 +55,23 @@ public class ReservationDao {
         return new Reservation(id, reservation.getName(), reservation.getDate(), reservation.getTime());
     }
 
-    public Optional<Reservation> getQuery(String sql, Object... args) {
+    public Optional<Reservation> getQuery(Long id) {
+        String selectQuery = """
+                SELECT *
+                FROM reservation
+                INNER JOIN reservation_time
+                ON reservation.time_id = reservation_time.id
+                WHERE reservation.id = ?
+                """;
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ROW_MAPPER, args));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(selectQuery, ROW_MAPPER, id));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
-    public void update(String sql, Object... args) {
-        jdbcTemplate.update(sql, args);
+    public void deleteById(Long id) {
+        String deleteQuery = "DELETE FROM reservation WHERE id = ?";
+        jdbcTemplate.update(deleteQuery, id);
     }
 }

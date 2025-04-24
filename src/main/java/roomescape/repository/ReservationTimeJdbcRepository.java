@@ -14,26 +14,22 @@ public class ReservationTimeJdbcRepository implements ReservationTimeRepository 
     private final ReservationTimeDao reservationTimeDao;
 
     @Override
-    public ReservationTime save(ReservationTime reservationTime) {
-        String insertQuery = "INSERT INTO reservation_time (start_at) VALUES (?)";
-        return reservationTimeDao.insertAndGet(insertQuery, reservationTime);
+    public List<ReservationTime> getAll() {
+        return reservationTimeDao.getAllQuery();
     }
 
     @Override
-    public List<ReservationTime> getAll() {
-        String selectQuery = "SELECT * FROM reservation_time";
-        return reservationTimeDao.getAllQuery(selectQuery);
+    public ReservationTime save(ReservationTime reservationTime) {
+        return reservationTimeDao.insertAndGet(reservationTime);
     }
 
     @Override
     public Optional<ReservationTime> findById(Long id) {
-        String selectQuery = "SELECT * FROM reservation_time WHERE id = ?";
-        return reservationTimeDao.getQuery(selectQuery, id);
+        return reservationTimeDao.getQuery(id);
     }
 
     @Override
     public void remove(ReservationTime reservationTime) {
-        String deleteQuery = "DELETE FROM reservation_time WHERE id = ?";
-        reservationTimeDao.update(deleteQuery, reservationTime.getId());
+        reservationTimeDao.deleteById(reservationTime.getId());
     }
 }
