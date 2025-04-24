@@ -32,8 +32,8 @@ public class ReservationTimeJdbcRepository implements ReservationTimeRepository 
     }
 
     @Override
-    public void remove(ReservationTime reservation) {
+    public void remove(ReservationTime reservationTime) {
         String deleteQuery = "DELETE FROM reservation_time WHERE id = ?";
-        reservationTimeDao.update(deleteQuery, reservation);
+        reservationTimeDao.update(deleteQuery, reservationTime.getId());
     }
 }

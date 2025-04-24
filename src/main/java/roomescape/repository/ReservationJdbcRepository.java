@@ -31,15 +31,15 @@ public class ReservationJdbcRepository implements ReservationRepository {
     }
 
     @Override
-    public Optional<Reservation> findById(Long id) {
+    public Optional<Reservation> findById(Long reservationId) {
         String selectQuery = """
                 SELECT *
                 FROM reservation
                 INNER JOIN reservation_time
                 ON reservation.time_id = reservation_time.id
-                WHERE id = ?
+                WHERE reservation.id = ?
                 """;
-        return reservationDao.getQuery(selectQuery, id);
+        return reservationDao.getQuery(selectQuery, reservationId);
     }
 
     @Override
