@@ -1,4 +1,4 @@
-package roomescape.repository;
+package roomescape.repository.dao;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -14,7 +14,7 @@ import roomescape.domain.ReservationTime;
 
 @Component
 @RequiredArgsConstructor
-public class ReservationTimeH2Dao implements ReservationTimeRepository {
+public class ReservationTimeDao {
 
     private static final RowMapper<ReservationTime> ROW_MAPPER = (resultSet, rowNum) -> new ReservationTime(
             resultSet.getLong("id"),
@@ -23,12 +23,14 @@ public class ReservationTimeH2Dao implements ReservationTimeRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    @Override
-    public ReservationTime save(ReservationTime reservationTime) {
-        String insertQuery = "INSERT INTO reservation_time (start_at) VALUES (?)";
+    public List<ReservationTime> getAllQuery(String sql) {
+        return jdbcTemplate.query(sql, ROW_MAPPER);
+    }
+
+    public ReservationTime insertAndGet(String sql, ReservationTime reservationTime) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
             ps.setString(1, reservationTime.getStartAt().toString());
             return ps;
         }, keyHolder);
@@ -37,25 +39,15 @@ public class ReservationTimeH2Dao implements ReservationTimeRepository {
         return new ReservationTime(id, reservationTime.getStartAt());
     }
 
-    @Override
-    public List<ReservationTime> getAll() {
-        String selectQuery = "SELECT * FROM reservation_time";
-        return jdbcTemplate.query(selectQuery, ROW_MAPPER);
-    }
-
-    @Override
-    public Optional<ReservationTime> findById(Long id) {
-        String selectQuery = "SELECT * FROM reservation_time WHERE id = ?";
+    public Optional<ReservationTime> getQuery(String sql, Object... args) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(selectQuery, ROW_MAPPER, id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ROW_MAPPER, args));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
-    @Override
-    public void remove(ReservationTime reservation) {
-        String deleteQuery = "DELETE FROM reservation_time WHERE id = ?";
-        jdbcTemplate.update(deleteQuery, reservation.getId());
+    public void update(String sql, Object... args) {
+        jdbcTemplate.update(sql, args);
     }
 }
