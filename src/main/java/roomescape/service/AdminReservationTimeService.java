@@ -31,11 +31,11 @@ public class AdminReservationTimeService {
 
     @Transactional
     public void delete(Long id) {
-        ReservationTime reservation = getReservationById(id);
+        ReservationTime reservation = getReservation(id);
         reservationTimeRepository.remove(reservation);
     }
 
-    private ReservationTime getReservationById(Long reservationId) {
+    private ReservationTime getReservation(Long reservationId) {
         return reservationTimeRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 시간이 존재하지 않습니다."));
     }
