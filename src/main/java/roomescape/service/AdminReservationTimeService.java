@@ -17,7 +17,7 @@ public class AdminReservationTimeService {
 
     @Transactional
     public ReservationTimeQuery create(CreateReservationTimeCommand command) {
-        ReservationTime reservationTime = reservationTimeRepository.save(command.toDomain());
+        ReservationTime reservationTime = reservationTimeRepository.save(command.toReservationTime());
         return ReservationTimeQuery.from(reservationTime);
     }
 

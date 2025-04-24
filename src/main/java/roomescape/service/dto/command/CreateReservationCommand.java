@@ -10,7 +10,7 @@ public record CreateReservationCommand(
         Long timeId
 ) {
 
-    public Reservation toDomain(ReservationTime reservationTime) {
+    public Reservation toReservation(ReservationTime reservationTime) {
         return new Reservation(name, date, reservationTime);
     }
 }
