@@ -22,8 +22,8 @@ public class ReservationH2Dao {
             resultSet.getString("name"),
             resultSet.getDate("date").toLocalDate(),
             new ReservationTime(
-                    resultSet.getLong("reservation.time_id"),
-                    resultSet.getTime("reservation_time.start_at").toLocalTime()
+                    resultSet.getLong("time_id"),
+                    resultSet.getTime("start_at").toLocalTime()
             )
     );
 
@@ -31,10 +31,10 @@ public class ReservationH2Dao {
 
     public List<Reservation> getAllQuery() {
         String selectAllQuery = """
-                SELECT *
-                FROM reservation
-                INNER JOIN reservation_time
-                ON reservation.time_id = reservation_time.id
+                SELECT r.id, r.name, r.date, r.time_id, rt.start_at
+                FROM reservation r
+                INNER JOIN reservation_time rt
+                ON r.time_id = rt.id
                 """;
         return jdbcTemplate.query(selectAllQuery, ROW_MAPPER);
     }
@@ -57,11 +57,11 @@ public class ReservationH2Dao {
 
     public Optional<Reservation> getQuery(Long id) {
         String selectQuery = """
-                SELECT *
-                FROM reservation
-                INNER JOIN reservation_time
-                ON reservation.time_id = reservation_time.id
-                WHERE reservation.id = ?
+                SELECT r.id, r.name, r.date, r.time_id, rt.start_at
+                FROM reservation r
+                INNER JOIN reservation_time rt
+                ON r.time_id = rt.id
+                WHERE r.id = ?
                 """;
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(selectQuery, ROW_MAPPER, id));

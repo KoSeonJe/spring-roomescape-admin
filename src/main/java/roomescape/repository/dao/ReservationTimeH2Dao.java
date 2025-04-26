@@ -24,7 +24,10 @@ public class ReservationTimeH2Dao {
     private final JdbcTemplate jdbcTemplate;
 
     public List<ReservationTime> getAllQuery() {
-        String selectQuery = "SELECT * FROM reservation_time";
+        String selectQuery = """
+                SELECT id, start_at
+                FROM reservation_time
+                """;
 
         return jdbcTemplate.query(selectQuery, ROW_MAPPER);
     }
@@ -44,7 +47,11 @@ public class ReservationTimeH2Dao {
     }
 
     public Optional<ReservationTime> getQuery(Long id) {
-        String selectQuery = "SELECT * FROM reservation_time WHERE id = ?";
+        String selectQuery = """
+                SELECT id, start_at
+                FROM reservation_time
+                WHERE id = ?
+                """;
 
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(selectQuery, ROW_MAPPER, id));
