@@ -1,18 +1,13 @@
 package roomescape.domain;
 
 import java.time.LocalDate;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Reservation {
-
-    private Long id;
-    private String name;
-    private LocalDate date;
-    private ReservationTime time;
+public record Reservation(
+        Long id,
+        String name,
+        LocalDate date,
+        ReservationTime time
+) {
 
     public Reservation(Long id, String name, LocalDate date, ReservationTime time) {
         validate(name, date);

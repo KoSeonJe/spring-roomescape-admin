@@ -17,9 +17,9 @@ public class FakeReservationRepository implements ReservationRepository {
     public Reservation save(Reservation reservation) {
         Reservation saveTarget = new Reservation(
                 AUTO_INCREMENT.getAndIncrement(),
-                reservation.getName(),
-                reservation.getDate(),
-                reservation.getTime()
+                reservation.name(),
+                reservation.date(),
+                reservation.time()
         );
         REPOSITORY.add(saveTarget);
         return saveTarget;
@@ -33,7 +33,7 @@ public class FakeReservationRepository implements ReservationRepository {
     @Override
     public Optional<Reservation> findById(Long id) {
         return REPOSITORY.stream()
-                .filter(reservation -> Objects.equals(id, reservation.getId()))
+                .filter(reservation -> Objects.equals(id, reservation.id()))
                 .findFirst();
     }
 

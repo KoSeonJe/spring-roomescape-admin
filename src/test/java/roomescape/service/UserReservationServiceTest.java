@@ -80,7 +80,7 @@ class UserReservationServiceTest {
         LocalDate date = LocalDate.now().plusDays(1);
         Reservation savedReservation = fakeReservationRepository.save(new Reservation(name, date, savedTime));
         // when
-        userReservationService.delete(savedReservation.getId());
+        userReservationService.delete(savedReservation.id());
         // then
         assertThat(fakeReservationRepository.getAll()).hasSize(0);
     }

@@ -30,6 +30,6 @@ public class ReservationJdbcRepository implements ReservationRepository {
 
     @Override
     public void remove(Reservation reservation) {
-        reservationDao.deleteById(reservation.getId());
+        reservationDao.deleteById(reservation.id());
     }
 }

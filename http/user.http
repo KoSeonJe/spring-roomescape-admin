@@ -1,21 +1,3 @@
-### 예약 추가 API
-POST localhost:8080/reservations
-Content-Type: application/json
-
-{
-  "name": "dompoo",
-  "date": "2024-12-05",
-  "time": "20:00"
-}
-
-### 예약 전체 조회 API
-
-GET localhost:8080/reservations
-
-### 예약 삭제 API
-
-DELETE localhost:8080/reservations/1
-
 ### 시간 추가 API
 
 POST localhost:8080/admin/times
@@ -28,6 +10,24 @@ content-type: application/json
 ### 시간 조회 API
 
 GET localhost:8080/admin/times
+
+### 예약 추가 API
+POST localhost:8080/reservations
+Content-Type: application/json
+
+{
+  "name": "dompoo",
+  "date": "2024-12-05",
+  "timeId": 1
+}
+
+### 예약 전체 조회 API
+
+GET localhost:8080/reservations
+
+### 예약 삭제 API
+
+DELETE localhost:8080/reservations/1
 
 ### 시간 삭제 API
 

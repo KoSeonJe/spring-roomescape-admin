@@ -45,14 +45,14 @@ public class ReservationDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
-            ps.setString(1, reservation.getName());
-            ps.setString(2, reservation.getDate().toString());
-            ps.setLong(3, reservation.getTime().getId());
+            ps.setString(1, reservation.name());
+            ps.setString(2, reservation.date().toString());
+            ps.setLong(3, reservation.time().getId());
             return ps;
         }, keyHolder);
         Long id = keyHolder.getKey().longValue();
 
-        return new Reservation(id, reservation.getName(), reservation.getDate(), reservation.getTime());
+        return new Reservation(id, reservation.name(), reservation.date(), reservation.time());
     }
 
     public Optional<Reservation> getQuery(Long id) {
