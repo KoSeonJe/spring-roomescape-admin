@@ -5,31 +5,31 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.ReservationTime;
-import roomescape.repository.dao.ReservationTimeDao;
+import roomescape.repository.dao.ReservationTimeH2Dao;
 
 @Repository
 @RequiredArgsConstructor
 public class ReservationTimeJdbcRepository implements ReservationTimeRepository {
 
-    private final ReservationTimeDao reservationTimeDao;
+    private final ReservationTimeH2Dao reservationTimeH2Dao;
 
     @Override
     public List<ReservationTime> getAll() {
-        return reservationTimeDao.getAllQuery();
+        return reservationTimeH2Dao.getAllQuery();
     }
 
     @Override
     public ReservationTime save(ReservationTime reservationTime) {
-        return reservationTimeDao.insertAndGet(reservationTime);
+        return reservationTimeH2Dao.insertAndGet(reservationTime);
     }
 
     @Override
     public Optional<ReservationTime> findById(Long id) {
-        return reservationTimeDao.getQuery(id);
+        return reservationTimeH2Dao.getQuery(id);
     }
 
     @Override
     public void remove(ReservationTime reservationTime) {
-        reservationTimeDao.deleteById(reservationTime.getId());
+        reservationTimeH2Dao.deleteById(reservationTime.getId());
     }
 }

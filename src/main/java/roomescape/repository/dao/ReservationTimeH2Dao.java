@@ -14,7 +14,7 @@ import roomescape.domain.ReservationTime;
 
 @Component
 @RequiredArgsConstructor
-public class ReservationTimeDao {
+public class ReservationTimeH2Dao {
 
     private static final RowMapper<ReservationTime> ROW_MAPPER = (resultSet, rowNum) -> new ReservationTime(
             resultSet.getLong("id"),
