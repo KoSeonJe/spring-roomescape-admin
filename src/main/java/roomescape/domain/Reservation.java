@@ -9,12 +9,8 @@ public record Reservation(
         ReservationTime time
 ) {
 
-    public Reservation(Long id, String name, LocalDate date, ReservationTime time) {
+    public Reservation {
         validate(name, date);
-        this.date = date;
-        this.time = time;
-        this.name = name;
-        this.id = id;
     }
 
     public Reservation(String name, LocalDate date, ReservationTime time) {
