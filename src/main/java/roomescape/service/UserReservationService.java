@@ -3,10 +3,9 @@ package roomescape.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import roomescape.domain.Reservation;
-import roomescape.repository.ReservationRepository;
 import roomescape.domain.ReservationTime;
+import roomescape.repository.ReservationRepository;
 import roomescape.repository.ReservationTimeRepository;
 import roomescape.service.dto.command.CreateReservationCommand;
 import roomescape.service.dto.query.ReservationQuery;
@@ -18,7 +17,6 @@ public class UserReservationService {
     private final ReservationRepository reservationRepository;
     private final ReservationTimeRepository reservationTimeRepository;
 
-    @Transactional
     public ReservationQuery create(CreateReservationCommand command) {
         ReservationTime reservationTime = getReservationTime(command.timeId());
         Reservation reservation = command.toReservation(reservationTime);
@@ -26,7 +24,6 @@ public class UserReservationService {
         return ReservationQuery.from(savedReservation);
     }
 
-    @Transactional(readOnly = true)
     public List<ReservationQuery> getAll() {
         List<Reservation> reservations = reservationRepository.getAll();
         return reservations.stream()
@@ -34,7 +31,6 @@ public class UserReservationService {
                 .toList();
     }
 
-    @Transactional
     public void delete(Long id) {
         Reservation target = getReservation(id);
         reservationRepository.remove(target);
