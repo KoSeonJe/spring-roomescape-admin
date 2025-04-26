@@ -15,7 +15,7 @@ public class ReservationTimeJdbcRepository implements ReservationTimeRepository 
 
     @Override
     public List<ReservationTime> getAll() {
-        return reservationTimeH2Dao.getAllQuery();
+        return reservationTimeH2Dao.selectAll();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ReservationTimeJdbcRepository implements ReservationTimeRepository 
 
     @Override
     public Optional<ReservationTime> findById(Long id) {
-        return reservationTimeH2Dao.getQuery(id);
+        return reservationTimeH2Dao.selectById(id);
     }
 
     @Override

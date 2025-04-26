@@ -15,7 +15,7 @@ public class ReservationJdbcRepository implements ReservationRepository {
 
     @Override
     public List<Reservation> getAll() {
-        return reservationH2Dao.getAllQuery();
+        return reservationH2Dao.selectAll();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ReservationJdbcRepository implements ReservationRepository {
 
     @Override
     public Optional<Reservation> findById(Long reservationId) {
-        return reservationH2Dao.getQuery(reservationId);
+        return reservationH2Dao.selectById(reservationId);
     }
 
     @Override

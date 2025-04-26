@@ -29,7 +29,7 @@ public class ReservationH2Dao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public List<Reservation> getAllQuery() {
+    public List<Reservation> selectAll() {
         String selectAllQuery = """
                 SELECT r.id, r.name, r.date, r.time_id, rt.start_at
                 FROM reservation r
@@ -55,7 +55,7 @@ public class ReservationH2Dao {
         return new Reservation(id, reservation.name(), reservation.date(), reservation.time());
     }
 
-    public Optional<Reservation> getQuery(Long id) {
+    public Optional<Reservation> selectById(Long id) {
         String selectQuery = """
                 SELECT r.id, r.name, r.date, r.time_id, rt.start_at
                 FROM reservation r
